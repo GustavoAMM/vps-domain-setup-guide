@@ -41,7 +41,7 @@ Host vps
     IdentityFile ~/.ssh/id_rsa
 ```
 
-Reemplazamos `#IP_DEL_SERVIDOR` por la IP del servidor VPS y `#USUARIO` por el usuario que utilizaremos para acceder al servidor.
+Reemplazamos `#IP_DEL_SERVIDOR` por la IP del servidor VPS y `#USUARIO` por el usuario que utilizaremos para acceder al servidor, que por defecto es `root`.
 
 Para acceder al servidor, ejecutamos el siguiente comando en la terminal de nuestro equipo local:
 ```bash
@@ -96,3 +96,92 @@ Guardamos los cambios y salimos del editor. Luego, reiniciamos el servicio SHH c
 ```bash
 sudo systemctl restart sshd
 ```
+
+#### Deshabilitar el acceso al usuario root y crear un nuevo usuario
+
+El usuario `root` tiene permisos de administrador en el servidor, por lo que es un objetivo común para los atacantes. Por esta razón, deshabilitamos el acceso al usuario `root` y creamos un nuevo usuario con permisos de administrador.
+
+Para añadir un nuevo usuario, ejecutamos el siguiente comando:
+
+```bash
+sudo adduser #NUEVO_USUARIO
+```
+
+> Reemplazamos `#NUEVO_USUARIO` por el nombre del nuevo usuario.
+
+Cuando le damos enter, se nos pedirá que asignemos una contraseña al nuevo usuario y que ingresemos información adicional como el nombre completo, número de teléfono, etc. Esta información es opcional, por lo que podemos presionar la tecla `Enter` para dejar los campos vacíos.
+
+Una vez creado el nuevo usuario, le asignamos permisos de administrador con el siguiente comando:
+
+```bash
+sudo usermod -aG sudo #NUEVO_USUARIO
+```
+
+> Reemplazamos `#NUEVO_USUARIO` por el nombre del nuevo usuario.
+
+Para verificar que el nuevo usuario se ha creado correctamente, ejecutamos el siguiente comando:
+
+```bash
+su - #NUEVO_USUARIO
+```
+
+> Reemplazamos `#NUEVO_USUARIO` por el nombre del nuevo usuario.
+
+Si el comando se ejecuta correctamente, se nos pedirá la contraseña del nuevo usuario y se nos dará acceso a la cuenta del nuevo usuario.
+
+Ahora vamos a copiar la llave SSH que generamos en nuestro equipo local al nuevo usuario. Para ello, creamos el directorio `~/.ssh` en la cuenta del nuevo usuario con el siguiente comando:
+
+```bash
+mkdir ~/.ssh
+```
+
+Ingresamos al directorio `~/.ssh` y creamos el archivo `authorized_keys` con el siguiente comando:
+
+```bash
+nvim ~/.ssh/authorized_keys
+```
+
+Dentro del archivo `authorized_keys`, pegamos la llave pública `~/.ssh/id_rsa.pub` que generamos en nuestro equipo local. Guardamos los cambios, salimos del editor y con un `exit` salimos de la cuenta del nuevo usuario.
+
+Ahora que hemos creado un nuevo usuario y le hemos asignado permisos de administrador, deshabilitamos el acceso al usuario `root`. Ingresamos al archivo `/etc/ssh/sshd_config` con el siguiente comando:
+
+```bash
+sudo nvim /etc/ssh/sshd_config
+```
+
+Dentro del archivo, buscamos la siguiente línea:
+
+```bash
+PermitRootLogin yes
+```
+
+Y la reemplazamos por:
+
+```bash
+PermitRootLogin no
+```
+
+Una vez hecho esto, guardamos los cambios y salimos del editor. Luego, reiniciamos el servicio SHH con el siguiente comando:
+
+```bash
+sudo systemctl restart sshd
+```
+
+Para verificar que el nuevo usuario tiene acceso al servidor, salimos del servidor con el comando `exit` y volvemos a ingresar al servidor con el nuevo usuario. Para ello necesitamos modificar el archivo `~/.ssh/config` en nuestro equipo local con la siguiente configuración:
+
+```bash
+Host vps
+    HostName #IP_DEL_SERVIDOR
+    User #NUEVO_USUARIO
+    IdentityFile ~/.ssh/id_rsa
+```
+
+> Reemplazamos `#NUEVO_USUARIO` por el nombre del nuevo usuario.
+
+Ahora, para acceder al servidor, ejecutamos el siguiente comando en la terminal de nuestro equipo local:
+
+```bash
+ssh vps
+```
+
+Al ejecutar el comando, se nos pedirá la contraseña de la llave SSH que asignamos al momento de generarla. Una vez ingresada la contraseña, se nos dará acceso al servidor con el nuevo usuario.
