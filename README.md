@@ -49,3 +49,50 @@ ssh vps
 ```
 La primera vez que nos conectemos al servidor, se nos pedirá que confirmemos la conexión escribiendo `yes` y presionando la tecla `Enter`. Luego, se nos pedirá la contraseña de la llave SSH que asignamos al momento de generarla. Una vez ingresada la contraseña, se nos dará acceso al servidor.
 
+### Configuración inicial
+
+Una vez dentro del servidor, ejecutamos los siguientes comandos para actualizar el sistema.
+
+```bash
+sudo apt update
+sudo apt upgrade
+```
+> Al ser una distribución de Linux basada en Debian, utilizamos `apt` para instalar y actualizar paquetes.
+
+Esto actualizará el sistema y nos pedirá confirmación para instalar las actualizaciones. Escribimos `y` y presionamos la tecla `Enter` para confirmar la instalación.
+
+### Seguridad del servidor
+
+La seguridad del servidor es un aspecto fundamental que no debemos de pasar por alto. A continuación, se presentan algunas recomendaciones para mejorar la seguridad del servidor.
+
+#### Deshabilitar el acceso por contraseña
+
+Para mejorar la seguridad del servidor, deshabilitamos el acceso por contraseña y permitimos el acceso únicamente por llaves SSH. Para ello, nos dirigimos al archivo `/etc/ssh/sshd_config` con el siguiente comando:
+
+```bash
+sudo nvim /etc/ssh/sshd_config
+```
+
+> `nvim` es un editor de texto que utilizaremos para editar el archivo. Si no está instalado, podemos instalarlo ejecutando `sudo apt install neovim`. Si no queremos instalar `nvim`, podemos utilizar `nano` o cualquier otro editor de texto.
+
+Dentro del archivo, buscamos las siguientes líneas:
+
+```bash
+PasswordAuthentication yes
+challengeResponseAuthentication yes
+UsePAM yes
+```
+
+Y las reemplazamos por:
+
+```bash
+PasswordAuthentication no
+challengeResponseAuthentication no
+UsePAM no
+```
+
+Guardamos los cambios y salimos del editor. Luego, reiniciamos el servicio SHH con el siguiente comando:
+
+```bash
+sudo systemctl restart sshd
+```
