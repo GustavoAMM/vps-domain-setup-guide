@@ -185,3 +185,59 @@ ssh vps
 ```
 
 Al ejecutar el comando, se nos pedirá la contraseña de la llave SSH que asignamos al momento de generarla. Una vez ingresada la contraseña, se nos dará acceso al servidor con el nuevo usuario.
+
+#### Configuración del cortafuegos
+
+El cortafuegos es una herramienta que nos permite controlar el tráfico de red que entra y sale del servidor. Para configurar el cortafuegos, utilizamos `ufw`, para instalarlo ejecutamos el siguiente comando:
+
+```bash
+sudo apt install ufw
+```
+
+Una vez instalado, habilitamos las conexiones SSH con el siguiente comando:
+
+```bash
+sudo ufw allow OpenSSH
+```
+
+Luego, habilitamos las conexiones HTTP y HTTPS con los siguientes comandos:
+
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+
+Finalmente, habilitamos el cortafuegos con el siguiente comando:
+
+```bash
+sudo ufw enable
+```
+> Nos avisa que el cortafuegos puede bloquear nuestra conexión SSH, escribimos `y` y presionamos la tecla `Enter` para confirmar.
+
+Para verificar que el cortafuegos se ha configurado correctamente, ejecutamos el siguiente comando:
+
+```bash
+sudo ufw status
+```
+
+Si todo se ha configurado correctamente, se nos mostrará un mensaje similar al siguiente:
+
+![UFW Status](./Img/ufw-status.png)
+
+Lo siguiente es configurar el cortafuegos para que deniegue todo el tráfico entrante y permita todo el tráfico saliente. Para ello, ejecutamos los siguientes comandos:
+
+```bash
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+```
+
+Para finalizar, reiniciamos ufw con el siguiente comando:
+
+```bash
+sudo ufw reload
+```
+
+Para verificar que todo ha sido configurado correctamente, aun podemos acceder al servidor salimos del servidor con el comando `exit` y volvemos a ingresar al servidor. Si todo se ha configurado correctamente, se nos dará acceso al servidor con el nuevo usuario.
+
+
+
