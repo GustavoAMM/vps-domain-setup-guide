@@ -1,5 +1,33 @@
 # Configuración de un servidor VPS con dominio propio
 
+## Tabla de contenido
+
+- [Introducción](#introducción)
+- [Requisitos](#requisitos)
+- [Configuración del servidor VPS](#configuración-del-servidor-vps)
+  - [Acceso al servidor](#acceso-al-servidor)
+  - [Configuración inicial](#configuración-inicial)
+  - [Seguridad del servidor](#seguridad-del-servidor)
+    - [Deshabilitar el acceso por contraseña](#deshabilitar-el-acceso-por-contraseña)
+    - [Deshabilitar el acceso al usuario root y crear un nuevo usuario](#deshabilitar-el-acceso-al-usuario-root-y-crear-un-nuevo-usuario)
+    - [Configuración del cortafuegos](#configuración-del-cortafuegos)
+    - [Configuración para ataques MITM](#configuración-para-ataques-mitm)
+    - [Configuración para ataques DDoS](#configuración-para-ataques-ddos)
+    - [Finalización de la configuración para la seguridad del servidor](#finalización-de-la-configuración-para-la-seguridad-del-servidor)
+  - [Configuración de la aplicación web](#configuración-de-la-aplicación-web)
+    - [Instalación de Nginx](#instalación-de-nginx)
+    - [Configuración para la aplicación web](#configuración-para-la-aplicación-web)
+    - [Creación de un virtual host](#creación-de-un-virtual-host)
+    - [Creación de la aplicación web](#creación-de-la-aplicación-web)
+    - [Reinicio de Nginx](#reinicio-de-nginx)
+  - [Configuración del dominio](#configuración-del-dominio)
+    - [Configuración de Nginx para el dominio](#configuración-de-nginx-para-el-dominio)
+    - [Configuración del dominio en Hostinger](#configuración-del-dominio-en-hostinger)
+    - [Configuración de SSL](#configuración-de-ssl)
+- [Conclusión y recomendaciones](#conclusión-y-recomendaciones)
+- [Documentación](#documentación)
+- [Referencias](#referencias)
+
 ## Introducción
 
 Este documento tiene como objetivo guiar a los usuarios a configurar un servidor VPS con un dominio propio. El servidor VPS será configurado con un sistema operativo Debian 11 y al igual que el dominio, será adquirido a través de la plataforma de Hostinger.
@@ -579,13 +607,11 @@ Además, podemos ver que el dominio tiene un certificado SSL en la barra de dire
 
 ![ssl-Navbar](./Img/ssl-navbar.png)
 
-## Conclusión, recomendaciones y advertencias
+## Conclusión y recomendaciones
 
 En este documento, hemos configurado un servidor VPS con un dominio propio. Hemos aplicado configuraciones de seguridad al servidor, desplegado una aplicación web y configurado el dominio para que apunte al servidor VPS. Además, hemos configurado un certificado SSL para el dominio.
 
 Es importante tener en cuenta que la configuración del servidor y del dominio puede variar dependiendo del proveedor de servicios. Por lo tanto, es importante leer la documentación del proveedor de servicios y seguir las recomendaciones del proveedor de servicios.
-
-Es importante tener en cuenta que la seguridad del servidor es un aspecto fundamental que no debemos de pasar por alto. Por lo tanto, es importante aplicar configuraciones de seguridad al servidor y mantener el servidor actualizado.
 
 ## Documentación:
 ![Logo](./Img/icono.ico)
