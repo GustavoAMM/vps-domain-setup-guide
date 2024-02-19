@@ -512,3 +512,70 @@ Reemplazamos `#IP_DEL_SERVIDOR` por la IP del servidor. Si es un subdominio, agr
 Guardamos los cambios y esperamos a que la configuración se aplique. Una vez que la configuración se ha aplicado, ingresamos el dominio en el navegador web pero lo más probable es que nos muestre un error.
 
 ![Dominio](./Img/error.png)
+
+### Configuración de SSL
+
+El error que se muestra en la imagen anterior se debe a que el dominio no tiene configurado un certificado SSL. Para configurar un certificado SSL, utilizamos `Certbot` que es una herramienta que nos permite obtener un certificado SSL gratuito de Let's Encrypt.
+
+Para instalar `Certbot`, ejecutamos los siguientes comandos:
+
+```bash
+sudo apt install certbot
+```
+
+Como ya hemos instalado Nginx, necesitamos instalar el plugin de `Certbot` para Nginx con el siguiente comando:
+
+```bash
+sudo apt install python3-certbot-nginx
+```
+
+Habilitamos el cortafuegos para que `Certbot` pueda obtener el certificado SSL con el siguiente comando:
+
+```bash
+sudo ufw allow 'Nginx Full'
+```
+
+Luego, verificamos que el cortafuegos se ha configurado correctamente con el siguiente comando:
+
+```bash
+sudo ufw status
+```
+
+La salida del comando debería de mostrar un mensaje similar al siguiente:
+
+![UFW Status](./Img/ufw-status-nginx.png)
+
+Ahora necesitamos eliminar el nginx HTTP con el siguiente comando:
+
+```bash
+sudo ufw delete allow 'Nginx HTTP'
+```
+
+Tendremos una salida similar a la siguiente:
+
+![UFW Status](./Img/ufw-delete.png)
+
+> Todo esto es para evitar redundancia en el cortafuegos.
+
+Una vez instalado certbot, ejecutamos el siguiente comando para obtener el certificado SSL:
+
+```bash
+sudo certbot
+```
+
+El comando nos guiará a través de un asistente para obtener el certificado SSL. Nos pedirá que ingresemos el correo electrónico para recibir notificaciones y que aceptemos los términos de servicio. Luego, nos pedirá que seleccionemos los dominios para los que queremos obtener el certificado SSL. Una vez seleccionados los dominios, el asistente obtendrá el certificado SSL y configurará Nginx para utilizarlo.
+
+Para verificar que el certificado SSL se ha configurado correctamente, y para cuando hagamos una renovación del certificado, ejecutamos el siguiente comando:
+
+```bash
+sudo certbot renew --dry-run
+```
+
+Si la salida del comando no muestra errores, el certificado SSL se ha configurado correctamente. Esperamos a que la configuración se aplique y volvemos a ingresar el dominio en el navegador web. Si todo se ha configurado correctamente, se nos mostrará la aplicación web con el certificado SSL.
+
+![Dominio](./Img/ssl.png)
+
+Además, podemos ver que el dominio tiene un certificado SSL en la barra de direcciones del navegador web.
+
+![ssl-Navbar](./Img/ssl-navbar.png)
+
