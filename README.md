@@ -320,3 +320,137 @@ sudo systemctl status fail2ban
 
 Una vez que el servidor se ha reiniciado, volvemos a ingresar al servidor con el nuevo usuario. Si todo se ha configurado correctamente, se nos dará acceso al servidor con el nuevo usuario.
 
+## Configuración de la aplicación web
+
+### Instalación de Nginx
+
+> Nginx es uno de los servidores web más populares del mundo y se utiliza para servir contenido web. Pero si quieres usar Apache o cualquier otro servidor web, puedes hacerlo.
+
+Para instalar Nginx, ejecutamos el siguiente comando:
+
+```bash
+sudo apt install nginx
+```
+
+Ahora que Nginx se ha instalado, necesitamos permitir Nginx a través del cortafuegos con el siguiente comando:
+
+```bash
+sudo ufw allow 'Nginx HTTP'
+```
+
+Para verificar que Nginx se ha instalado correctamente, ingresamos la IP del servidor en el navegador web. Si todo se ha configurado correctamente, se nos mostrará la página de bienvenida de Nginx.
+
+![Nginx](./Img/nginx-main.png)
+
+### Configuración para la aplicación web
+
+En este ejemplo, desplegaremos una aplicación web desarrollada en Node.js, en especifico crearemos una aplicación estática con `vite`. Para ello, necesitamos instalar Node.js en el servidor.
+
+Para instalar Node.js, ejecutamos los siguientes comandos:
+
+```bash
+sudo apt install nodejs
+sudo apt install npm
+```
+
+> [!TIP]
+> Si quieres instalar nodejs de otra forma, puedes hacerlo. Puedes instalar nodejs con `nvm` o `n` que son herramientas que nos permiten instalar y gestionar varias versiones de Node.js.
+
+Para verificar que Node.js se ha instalado correctamente, ejecutamos los siguientes comandos:
+
+```bash
+node -v
+npm -v
+```
+
+Si Node.js se ha instalado correctamente, se nos mostrará la versión de Node.js y npm.
+
+### Creación de un virtual host
+
+Un virtual host es un método que nos permite alojar varios dominios en un solo servidor. En este caso, crearemos un virtual host para alojar nuestra aplicación web.
+
+Necesitamos crear un nuevo archivo de configuración para el virtual host con el siguiente comando:
+
+```bash
+sudo nvim /etc/nginx/sites-available/nombre-de-tu-aplicacion.conf
+```
+
+Dentro del archivo, agregamos la siguiente configuración:
+
+```bash
+server {
+    listen 80;
+    server_name #IP_DEL_SERVIDOR;
+    root /var/www/nombre-de-tu-aplicacion/archivos_estáticos; # Ruta de la aplicación donde se encuentran los archivos estáticos de la aplicación.
+    index index.html;
+
+    access_log /var/log/nginx/nombre-de-tu-aplicacion.access.log;
+    error_log /var/log/nginx/nombre-de-tu-aplicacion.error.log;
+
+    location / {
+        try_files $uri /index.html =404;
+    }
+}
+```
+
+Reemplazamos `#IP_DEL_SERVIDOR` por la IP del servidor y `nombre-de-tu-aplicacion` por el nombre de la aplicación.
+
+> [!WARNING]
+> Es importante tener en cuenta que la aplicación esta hecha con `vite` y los archivos estáticos se encuentran en la carpeta `dist` en la raíz del proyecto. Si la aplicación esta hecha con otro framework o librería, es necesario cambiar la ruta de los archivos estáticos.
+
+Guardamos los cambios y salimos del editor. Luego, creamos un enlace simbólico del archivo de configuración en el directorio `sites-enabled`. Pero antes, necesitamos quitar el enlace simbólico del archivo de configuración por defecto con el siguiente comando:
+
+```bash
+sudo unlink /etc/nginx/sites-enabled/default
+```
+
+Luego, creamos el enlace simbólico con el siguiente comando:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/nombre-de-tu-aplicacion.conf /etc/nginx/sites-enabled/
+```
+
+Para verificar que el enlace simbólico se ha creado correctamente, ejecutamos el siguiente comando:
+
+```bash
+ls -al /etc/nginx/sites-enabled/
+```
+
+### Creación de la aplicación web
+
+Si ya tienes una aplicación web desarrollada, puedes subir los archivos estáticos de la aplicación a la carpeta `/var/www/nombre-de-tu-aplicacion/archivos_estáticos` en el servidor.
+
+Primero nos dirigimos a la carpeta `/var/www` con el siguiente comando:
+```bash
+cd /var/www
+```
+
+Luego, creamos una aplicación de ejemplo con `vite` con los siguientes comandos:
+
+```bash
+npm create vite@latest
+cd nombre-de-tu-aplicacion
+npm install
+npm run build
+```
+
+Para verificar que la apliacación si ha creado correctamente, ejecutamos el siguiente comando:
+
+```bash
+ls -al /var/www/nombre-de-tu-aplicacion
+```
+
+Si la aplicación se ha creado correctamente, se nos mostrará una lista de archivos y carpetas.
+
+
+### Reinicio de Nginx
+
+Una vez que hemos creado el virtual host y subido los archivos estáticos de la aplicación, reiniciamos Nginx con el siguiente comando:
+
+```bash
+sudo service nginx reload
+```
+
+Para verificar que el virtual host se ha creado correctamente, ingresamos con la IP del servidor en el navegador web. Si todo se ha configurado correctamente, se nos mostrará la aplicación web.
+
+![Aplicación web](./Img/app-web.png)
