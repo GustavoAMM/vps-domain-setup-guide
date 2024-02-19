@@ -486,3 +486,29 @@ Guardamos los cambios y salimos del editor. Luego, reiniciamos Nginx con el sigu
 ```bash
 sudo service nginx reload
 ```
+
+### Configuración del dominio en Hostinger
+
+Ingresamos a la plataforma de Hostinger y nos dirigimos a la sección `Dominios` en el panel de ajustes. Luego, seleccionamos el dominio que queremos configurar.
+
+![Dominios](./Img/dns.png)
+
+En la sección `DNS`, agregamos un nuevo registro `A` con los siguientes valores:
+
+- `Tipo`: `A`
+- `Nombre`: `@`
+- `Apunta a`: `#IP_DEL_SERVIDOR`
+- `TTL`: `60` (o el valor que prefieras)
+
+Agregamos un segundo registro con los siguientes valores:
+
+- `Tipo`: `CNAME`
+- `Nombre`: `www`
+- `Apunta a`: `nombre-de-tu-dominio.com`
+- `TTL`: `300` (o el valor que prefieras)
+
+Reemplazamos `#IP_DEL_SERVIDOR` por la IP del servidor. Si es un subdominio, agregamos el nombre del subdominio en el campo `Nombre` en lugar de `@`.
+
+Guardamos los cambios y esperamos a que la configuración se aplique. Una vez que la configuración se ha aplicado, ingresamos el dominio en el navegador web pero lo más probable es que nos muestre un error.
+
+![Dominio](./Img/error.png)
