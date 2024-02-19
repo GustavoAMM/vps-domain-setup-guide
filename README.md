@@ -246,6 +246,31 @@ Para verificar que todo ha sido configurado correctamente, aun podemos acceder a
 
 Los ataques MITM son un tipo de ataque que se produce cuando un atacante se interpone entre el cliente y el servidor para interceptar y modificar el tráfico entre ellos. Para evitar este tipo de ataques, deshabilitamos el reenvío de paquetes en el servidor.
 
+Necesitamos modificar el archivo `/etc/sysctl.conf` con el siguiente comando:
 
+```bash
+sudo nvim /etc/sysctl.conf
+```
 
+Dentro del archivo, buscamos las siguientes líneas para descomentarlas:
 
+```bash
+#net.ipv4.conf.default.rp_filter=1
+#net.ipv4.conf.all.rp_filter=1
+#net.ipv4.conf.all.accept_redirects=0
+#net.ipv6.conf.all.accept_redirects=0
+#net.ipv4.conf.all.send_redirects=0
+#net.ipv4.conf.all.accept_source_route=0
+#net.ipv6.conf.all.accept_source_route=0
+#net.ipv4.conf.all.log_martians=1
+```
+
+Guardamos los cambios y salimos del editor. Luego, ejecutamos el siguiente comando para aplicar los cambios:
+
+```bash
+sudo sysctl -p
+```
+
+Si la configuración se ha aplicado correctamente, nos mostrará un mensaje similar al siguiente:
+
+![sysctl](./Img/MITM-config.png)
