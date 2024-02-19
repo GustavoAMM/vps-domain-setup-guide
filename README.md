@@ -239,5 +239,13 @@ sudo ufw reload
 
 Para verificar que todo ha sido configurado correctamente, aun podemos acceder al servidor salimos del servidor con el comando `exit` y volvemos a ingresar al servidor. Si todo se ha configurado correctamente, se nos dará acceso al servidor con el nuevo usuario.
 
+#### Configuración para ataques MITM
+
+> [!WARNING]
+> Es importante tener en cuenta que la siguiente configuración modificará archivos del sistema y un error en la configuración puede dejar el servidor inaccesible.
+
+Los ataques MITM son un tipo de ataque que se produce cuando un atacante se interpone entre el cliente y el servidor para interceptar y modificar el tráfico entre ellos. Para evitar este tipo de ataques, deshabilitamos el reenvío de paquetes en el servidor.
+
+
 
 
