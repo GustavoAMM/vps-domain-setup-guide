@@ -579,3 +579,21 @@ Además, podemos ver que el dominio tiene un certificado SSL en la barra de dire
 
 ![ssl-Navbar](./Img/ssl-navbar.png)
 
+## Conclusión, recomendaciones y advertencias
+
+En este documento, hemos configurado un servidor VPS con un dominio propio. Hemos aplicado configuraciones de seguridad al servidor, desplegado una aplicación web y configurado el dominio para que apunte al servidor VPS. Además, hemos configurado un certificado SSL para el dominio.
+
+Es importante tener en cuenta que la configuración del servidor y del dominio puede variar dependiendo del proveedor de servicios. Por lo tanto, es importante leer la documentación del proveedor de servicios y seguir las recomendaciones del proveedor de servicios.
+
+Es importante tener en cuenta que la seguridad del servidor es un aspecto fundamental que no debemos de pasar por alto. Por lo tanto, es importante aplicar configuraciones de seguridad al servidor y mantener el servidor actualizado.
+
+## Documentación:
+![Logo](./Img/icono.ico)
+- @GustavoAMM - GitHub  
+
+## Referencias
+
+- [AprendeWebDev](https://www.youtube.com/@AprendeWebDev)
+- [Certbot](https://certbot.eff.org/)
+- [Hostinger](https://www.hostinger.com/)
+- [Vite](https://vitejs.dev/)
