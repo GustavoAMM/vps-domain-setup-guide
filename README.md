@@ -274,3 +274,49 @@ sudo sysctl -p
 Si la configuración se ha aplicado correctamente, nos mostrará un mensaje similar al siguiente:
 
 ![sysctl](./Img/MITM-config.png)
+
+#### Configuración para ataques DDoS
+
+Los ataques DDoS son un tipo de ataque que tiene como objetivo saturar la red del servidor con una gran cantidad de tráfico para dejarlo inaccesible. Para evitar este tipo de ataques, instalamos `fail2ban` que es una herramienta que monitorea los logs del servidor y bloquea las direcciones IP que intentan acceder al servidor de forma maliciosa.
+
+Para instalar `fail2ban`, ejecutamos el siguiente comando:
+
+```bash
+sudo apt install fail2ban
+```
+
+Una vez instalado, habilitamos el servicio con el siguiente comando:
+
+```bash
+sudo systemctl enable fail2ban
+```
+
+Luego, iniciamos el servicio con el siguiente comando:
+
+```bash
+sudo systemctl start fail2ban
+```
+
+Para verificar que `fail2ban` se ha instalado correctamente, ejecutamos el siguiente comando:
+
+```bash
+sudo systemctl status fail2ban
+```
+
+#### Finalización de la configuración para la seguridad del servidor
+
+Una vez que hemos aplicado todas las configuraciones de seguridad, reiniciamos el servidor con el siguiente comando:
+
+```bash
+sudo reboot
+```
+
+verificamos que el firewall y `fail2ban` se han iniciado correctamente con el siguiente comando:
+
+```bash
+sudo ufw status
+sudo systemctl status fail2ban
+```
+
+Una vez que el servidor se ha reiniciado, volvemos a ingresar al servidor con el nuevo usuario. Si todo se ha configurado correctamente, se nos dará acceso al servidor con el nuevo usuario.
+
