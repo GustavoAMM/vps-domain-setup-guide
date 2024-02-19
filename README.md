@@ -434,7 +434,7 @@ npm install
 npm run build
 ```
 
-Para verificar que la apliacación si ha creado correctamente, ejecutamos el siguiente comando:
+Para verificar que la aplicación se ha creado correctamente, ejecutamos el siguiente comando:
 
 ```bash
 ls -al /var/www/nombre-de-tu-aplicacion
@@ -454,3 +454,35 @@ sudo service nginx reload
 Para verificar que el virtual host se ha creado correctamente, ingresamos con la IP del servidor en el navegador web. Si todo se ha configurado correctamente, se nos mostrará la aplicación web.
 
 ![Aplicación web](./Img/app-web.png)
+
+## Configuración del dominio
+
+Hasta este punto, hemos configurado el servidor VPS y desplegado una aplicación web. Ahora, necesitamos configurar el dominio para que apunte al servidor VPS. La siguiente configuración es específica para el dominio adquirido en Hostinger.
+
+### Configuración de Nginx para el dominio
+
+Necesitamos modificar el archivo de configuración del virtual host con el siguiente comando:
+
+```bash
+sudo nvim /etc/nginx/sites-available/nombre-de-tu-aplicacion.conf
+```
+
+Dentro del archivo, modificamos la siguiente línea:
+
+```bash
+server_name #IP_DEL_SERVIDOR;
+```
+
+Por:
+
+```bash
+server_name nombre-de-tu-dominio.com;
+```
+
+Reemplazamos `nombre-de-tu-dominio.com` por el nombre de tu dominio.
+
+Guardamos los cambios y salimos del editor. Luego, reiniciamos Nginx con el siguiente comando:
+
+```bash
+sudo service nginx reload
+```
